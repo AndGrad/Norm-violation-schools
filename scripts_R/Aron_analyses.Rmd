@@ -1,0 +1,75 @@
+---
+title: "aron_analyses"
+output: html_document
+date: "2025-05-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Norm breaking
+```{r histograms, echo=FALSE, message=FALSE, warning=FALSE}
+
+nb1 <- ordinal_barplot(data, stealapp)
+nb2 <- ordinal_barplot(data, phoneapp)
+nb3 <- ordinal_barplot(data, interruptapp)
+nb4 <-ordinal_barplot(data, insultapp)
+nb5 <-ordinal_barplot(data, onlineapp)
+empty_plot <- ggplot() + theme_void()
+
+## make patchwork plot\
+(nb1 + nb2 + nb3) / (nb4 + nb5+empty_plot)
+```
+
+## Punish scenarios
+
+```{r}
+ps1 <- ordinal_barplot(data, stealnoth)
+ps2 <- ordinal_barplot(data, stealremark)
+ps3 <- ordinal_barplot(data, stealavoid)
+ps4 <- ordinal_barplot(data, stealtalk)
+ps5 <- ordinal_barplot(data, phonenoth)
+ps6 <- ordinal_barplot(data, phoneremark)
+ps7 <- ordinal_barplot(data, phoneavoid)
+ps8 <- ordinal_barplot(data, phonetalk)
+ps9 <- ordinal_barplot(data, interruptnoth)
+ps10 <- ordinal_barplot(data, interruptremark)
+ps11 <- ordinal_barplot(data, interruptavoid)
+ps12 <- ordinal_barplot(data, interrupttalk)
+ps13 <- ordinal_barplot(data, insultnoth)
+ps14 <- ordinal_barplot(data, insultremark)
+ps15 <- ordinal_barplot(data, insultavoid)
+ps16 <- ordinal_barplot(data, insulttalk)
+
+
+# Arrange plots in a grid
+plot_list <- list(ps1, ps2, ps3, ps4, ps5, ps6, ps7, ps8, ps9, ps10, ps11, ps12, ps13, ps14, ps15,ps16)
+combined_plot <- patchwork::wrap_plots(plot_list, ncol = 4)
+combined_plot
+```
+
+
+Norm breaking groups
+
+```{r}
+
+facet_labels <- c("0" = "Non-Friend", "1" = "Friend")
+
+nb1 <- faceted_barplot(data = data, x_var = phoneapp, facet_var = phonefriend, title_text = "") + facet_wrap(~phonefriend, labeller = labeller(.default = facet_labels))
+
+
+nb2 <- faceted_barplot(data = data, x_var = phoneapp, facet_var = phonefriend, title_text = "") + facet_wrap(~phonefriend, labeller = labeller(.default = facet_labels))
+
+nb3 <- faceted_barplot(data = data, x_var = interruptapp, facet_var = interruptfriend, title_text = "") + facet_wrap(~interruptfriend, labeller = labeller(.default = facet_labels))
+
+nb4 <- faceted_barplot(data = data, x_var = insultapp, facet_var = insultfriend, title_text = "") + facet_wrap(~insultfriend, labeller = labeller(.default = facet_labels))
+
+nb5 <- faceted_barplot(data = data, x_var = onlineapp, facet_var = onlinefriend, title_text = "") + facet_wrap(~onlinefriend, labeller = labeller(.default = facet_labels))
+
+
+(nb1 + nb2 + nb3) /
+(nb4 + nb5 + empty_plot)
+```
+
+

@@ -1,0 +1,591 @@
+---
+title: "Scenarios Analyses"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    code_folding: hide
+    theme: flatly
+    highlight: tango
+    df_print: paged
+---
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+knitr::opts_chunk$set(
+  echo    = FALSE,    # hide code
+  message = FALSE,    # hide messages
+  warning = FALSE,    # hide warnings
+  fig.width = 6,      
+  fig.height = 6,     
+  dev     = "png"
+)
+
+```
+
+```{r, include=FALSE}
+
+## change options to only run linear contrast for factors
+options(contrasts = c("contr.treatment", "contr.treatment"))
+
+## prepare environment
+source("scripts_R/utils/check_pkgs.R")
+source("scripts_R/utils/make_plots.R")
+source("scripts_R/data_wrangling.R")
+
+```
+
+```{r}
+
+```
+
+## 1. Overview of scenario data {.tabset}
+
+First, I look at how participants rated the appropriateness of each violation in each scenario, and the appropriateness of the different types of punishments in that scenario.
+
+[Data is displayed separately by treatment]{.underline}, i.e. whether the violation is done by a **friend/non-friend**, and weather the punishment is performed by a friend to a **friend/non-friend**. Treatments are between subjects.
+
+**Insights:**\
+All violations are considered fairly inappropriate, with insulting a family member and stealing being the worst.\
+There is quite some variation in appropriateness of the different types of punishment.\
+There are no striking differences between treatments.
+
+### Stealing
+
+```{r,  fig.width = 6, fig.height = 6  }
+
+## appropriateness of behavious
+stealapp <- faceted_barplot(
+  data = data,
+  x_var = stealapp,
+  facet_var = stealfriend,
+  title_text = "Appropriateness") +
+  theme(plot.background = element_rect(fill = "grey90"))+
+  facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels)) 
+  
+## reactions
+
+#1.doing nothing
+stealnoth <- faceted_barplot(
+  data = data,
+  x_var = stealnoth,
+  facet_var = stealfriend,
+  title_text = "Punishment: do nothing"
+) +
+  facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
+
+#2.angry remark
+
+stealremark <- faceted_barplot(
+  data = data,
+  x_var = stealremark,
+  facet_var = stealfriend,
+  title_text = "Punishment: angry remark"
+) +
+ labs() +
+  facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
+
+#3.gossip
+stealtalk <- faceted_barplot(
+  data = data,
+  x_var = stealtalk,
+  facet_var = stealfriend,
+  title_text = "Punishment: gossip"
+) + facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
+
+#4.avoid
+stealavoid <- faceted_barplot(
+  data = data,
+  x_var = stealavoid,
+  facet_var = stealfriend,
+  title_text = "Punishment: avoid"
+) +
+
+  facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
+
+#5. physical punishment
+# faceted_barplot(
+#   data = data,
+#   x_var = stealphyspunapp,
+#   facet_var = stealfriend,
+#   title_text = "Stealing: physical punishment"
+# ) + facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
+
+
+panel_punishment <- stealapp / (stealnoth + stealavoid)  / (stealtalk   + stealremark) +
+  plot_annotation(
+    title = "Stealing",
+    theme = theme(plot.title = element_text(size = 14, face = "bold")),
+    subtitle = "Rating: 0 = totally inappropriate, 5 - totally appropriate"
+  )
+
+panel_punishment
+    
+```
+
+### Phone
+
+```{r}
+
+## appropriateness of behavious
+phoneapp <- faceted_barplot(
+  data = data,
+  x_var = phoneapp,
+  facet_var = phonefriend,
+  title_text = "Appropriateness"
+) +  facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))+
+    theme(plot.background = element_rect(fill = "grey90"))
+
+
+## reactions
+#1. doing nothing
+
+phonenoth <- faceted_barplot(
+  data = data,
+  x_var = phonenoth,
+  facet_var = phonefriend,
+  title_text = "Punishment: do nothing"
+) +
+ # labs(subtitle = "Friend A does nothing about the person who behaved like the PURPLE triangle") +
+  facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))
+
+#2. angry remark
+phoneremark <- faceted_barplot(
+  data = data,
+  x_var = phoneremark,
+  facet_var = phonefriend,
+  title_text = "Punishment: angry remark"
+) +
+ # labs(subtitle = "Friend B makes an angry remark to the person who behaved like the PURPLE triangle.") +
+  facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))
+
+#3. gossip
+phonetalk <- faceted_barplot(
+  data = data,
+  x_var = phonetalk,
+  facet_var = phonefriend,
+  title_text = "Punishment: gossip"
+) + 
+#  labs(subtitle = "Friend C talks to someone else about the person who behaved like the PURPLE triangle. ") +
+  facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))
+
+#4.avoid
+phoneavoid <- faceted_barplot(
+  data = data,
+  x_var = phoneavoid,
+  facet_var = phonefriend,
+  title_text = "Punishment: avoid"
+) +
+  #labs(subtitle = "Friend D makes a point of avoiding the person who behaved like the PURPLE triangle in the future, even when that person is not behaving in this way.") +
+  facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))
+
+
+
+panel_phone <- phoneapp / (phonenoth + phoneavoid)  / (phonetalk   + phoneremark) +
+  plot_annotation(
+    title = "Phone in class",
+    theme = theme(plot.title = element_text(size = 14, face = "bold")),
+    subtitle = "Rating: 0 = totally inappropriate, 5 - totally appropriate"
+  )
+
+panel_phone
+    
+```
+
+### Interrupt
+
+```{r}
+
+## appropriateness of behavious
+interruptapp <- faceted_barplot(
+  data = data,
+  x_var = interruptapp,
+  facet_var = factor(interruptfriend),
+  title_text = "Appropriateness"
+) +  facet_wrap( ~ interruptfriend, labeller = labeller(.default = facet_labels)) +
+  theme(plot.background = element_rect(fill = "grey90"))
+
+## reactions
+#1. doing nothing
+
+interruptnoth <- faceted_barplot(
+  data = data,
+  x_var = interruptnoth,
+  facet_var = interruptfriend,
+  title_text = "Punishment: do nothing"
+) +
+ # labs(subtitle = "Friend A does nothing about the person who behaved like the PURPLE triangle") +
+  facet_wrap( ~ interruptfriend, labeller = labeller(.default = facet_labels))
+
+#2. angry remark
+
+interruptremark <- faceted_barplot(
+  data = data,
+  x_var = interruptremark,
+  facet_var = interruptfriend,
+  title_text = "Punishment: angry remark"
+) +
+ # labs(subtitle = "Friend B makes an angry remark to the person who behaved like the PURPLE triangle.") +
+  facet_wrap( ~ interruptfriend, labeller = labeller(.default = facet_labels))
+
+#3. gossip
+
+interrupttalk <- faceted_barplot(
+  data = data,
+  x_var = interrupttalk,
+  facet_var = interruptfriend,
+  title_text = "Punishment: gossip"
+) + 
+#  labs(subtitle = "Friend C talks to someone else about the person who behaved like the PURPLE triangle. ") +
+  facet_wrap( ~ interruptfriend, labeller = labeller(.default = facet_labels))
+
+#4.avoid
+
+interruptavoid <- faceted_barplot(
+  data = data,
+  x_var = interruptavoid,
+  facet_var = interruptfriend,
+  title_text = "Punishment: avoid"
+) +
+  #labs(subtitle = "Friend D makes a point of avoiding the person who behaved like the PURPLE triangle in the future, even when that person is not behaving in this way.") +
+  facet_wrap( ~ interruptfriend, labeller = labeller(.default = facet_labels))
+
+
+panel_interrupt <- interruptapp / (interruptnoth + interruptavoid)  / (interrupttalk   + interruptremark) +
+  plot_annotation(
+    title = "Interrupt in class",
+    theme = theme(plot.title = element_text(size = 14, face = "bold")),
+    subtitle = "Rating: 0 = totally inappropriate, 5 - totally appropriate"
+  )
+
+panel_interrupt
+
+```
+
+### Insult
+
+```{r}
+
+## appropriateness of behaviors
+insultapp <- faceted_barplot(
+  data = data,
+  x_var = insultapp,
+  facet_var = insultfriend,
+  title_text = "Appropriateness"
+) +  facet_wrap( ~ insultfriend, labeller = labeller(.default = facet_labels)) +
+   theme(plot.background = element_rect(fill = "grey90"))
+
+## reactions
+
+#1. doing nothing
+
+insultnoth <- faceted_barplot(
+  data = data,
+  x_var = insultnoth,
+  facet_var = insultfriend,
+  title_text = "Punishment: do nothing"
+) +
+ # labs(subtitle = "Friend A does nothing about the person who behaved like the PURPLE triangle") +
+  facet_wrap( ~ insultfriend, labeller = labeller(.default = facet_labels))
+
+#2. angry remark
+
+insultremark <- faceted_barplot(
+  data = data,
+  x_var = insultremark,
+  facet_var = insultfriend,
+  title_text = "Punishment: angry remark"
+) +
+ # labs(subtitle = "Friend B makes an angry remark to the person who behaved like the PURPLE triangle.") +
+  facet_wrap( ~ insultfriend, labeller = labeller(.default = facet_labels))
+
+#3. gossip
+
+insulttalk <- faceted_barplot(
+  data = data,
+  x_var = insulttalk,
+  facet_var = insultfriend,
+  title_text = "Punishment: gossip"
+) + 
+#  labs(subtitle = "Friend C talks to someone else about the person who behaved like the PURPLE triangle. ") +
+  facet_wrap( ~ insultfriend, labeller = labeller(.default = facet_labels))
+
+#4.avoid
+
+insultavoid <- faceted_barplot(
+  data = data,
+  x_var = insultavoid,
+  facet_var = insultfriend,
+  title_text = "Punishment: avoid"
+) +
+  #labs(subtitle = "Friend D makes a point of avoiding the person who behaved like the PURPLE triangle in the future, even when that person is not behaving in this way.") +
+  facet_wrap( ~ insultfriend, labeller = labeller(.default = facet_labels))
+
+
+panel_insult <- insultapp / (insultnoth + insultavoid)  / (insulttalk   + insultremark) +
+  plot_annotation(
+    title = "Insult family member",
+    theme = theme(plot.title = element_text(size = 14, face = "bold")),
+    subtitle = "Rating: 0 = totally inappropriate, 5 - totally appropriate"
+  )
+
+panel_insult
+
+```
+
+### Exclude
+
+```{r}
+
+## appropriateness of behaviors
+onlineapp <- faceted_barplot(
+  data = data,
+  x_var = onlineapp,
+  facet_var = onlinefriend,
+  title_text = "Appropriateness"
+) +  facet_wrap( ~ onlinefriend, labeller = labeller(.default = facet_labels)) +
+   theme(plot.background = element_rect(fill = "grey90"))
+
+
+#1. doing nothing
+
+onlinenothing <- faceted_barplot(
+  data = data,
+  x_var = onlinenothing,
+  facet_var = onlinefriend,
+  title_text = "Punishment: do nothing"
+) +
+ # labs(subtitle = "Friend A does nothing about the person who behaved like the PURPLE triangle") +
+  facet_wrap( ~ onlinefriend, labeller = labeller(.default = facet_labels))
+
+#2. angry remark
+
+onlineremark <- faceted_barplot(
+  data = data,
+  x_var = onlineremark,
+  facet_var = onlinefriend,
+  title_text = "Punishment: angry remark"
+) +
+ # labs(subtitle = "Friend B makes an angry remark to the person who behaved like the PURPLE triangle.") +
+  facet_wrap( ~ onlinefriend, labeller = labeller(.default = facet_labels))
+
+#3. gossip
+
+onlinetalk <- faceted_barplot(
+  data = data,
+  x_var = onlinetalk,
+  facet_var = onlinefriend,
+  title_text = "Punishment: gossip"
+) + 
+#  labs(subtitle = "Friend C talks to someone else about the person who behaved like the PURPLE triangle. ") +
+  facet_wrap( ~ onlinefriend, labeller = labeller(.default = facet_labels))
+
+#4.avoid
+onlineavoid <- faceted_barplot(
+  data = data,
+  x_var = onlineavoid,
+  facet_var = onlinefriend,
+  title_text = "Punishment: avoid"
+) +
+  #labs(subtitle = "Friend D makes a point of avoiding the person who behaved like the PURPLE triangle in the future, even when that person is not behaving in this way.") +
+  facet_wrap( ~ onlinefriend, labeller = labeller(.default = facet_labels))
+
+panel_online <- onlineapp / (onlinenothing + onlineavoid)  / (onlinetalk   + onlineremark) +
+  plot_annotation(
+    title = "Exclude from chat",
+    theme = theme(plot.title = element_text(size = 14, face = "bold")),
+    subtitle = "Rating: 0 = totally inappropriate, 5 - totally appropriate"
+  )
+
+panel_online
+
+```
+
+## 2. Analysis of appropriateness of violations across all domains {.tabset}
+
+Now I merge all the scenarios together.
+
+**Insight:**
+
+Overall appropriateness is quite low, with again no striking difference between treatments.
+
+```{r, fig.width = 6, fig.height = 4}
+data_app_all %>% 
+  ggplot() +
+  geom_bar(aes(x = rating_f, fill = domain)) +
+  scale_x_discrete(drop = FALSE) +  # show all factor levels
+  facet_wrap( ~ treatment) +
+  labs(title = "Appropriateness of behaviours across domains",
+       x = "rating") +
+  theme(strip.background = element_rect(fill = "lightgrey"))
+```
+
+## 2.1 ANOVA
+
+First I run an ANOVA to get an idea of differences across treatments and domains. The ANOVA showed that both treatment and domain significantly affected ratings, with a significant interaction indicating that the effect of treatment varied across domains.
+
+```{r}
+summary(aov(lm(rating ~ treatment * domain , data = data_app_all)))
+```
+
+## 2.2 Regressions {.tabset}
+
+I now run two multilevel linear regressions with participants as random intercept to zoom in on size and direction of efffects.
+
+First, a linear regression predicting rating \~ treatment shows a small effect of treatment: [violations by friends are considered slightly more appropriate.]{.underline}
+
+If we include a test of interactions between treatment and domain, we can see that the effect is driven by the "exclude from online chat scenario:
+
+>  "One student who is part of your **friends/others** **group** (**Student A**) excluded **another student**, who is also a part of your **friends group**, from a group chat on WhatsApp."
+
+### Rating \~ Treatment
+
+```{r}
+sjPlot::tab_model(lme4::lmer(rating ~ treatment + (1|ID2), data = data_app_all))
+```
+
+### Rating \~ Treatment \* Domain
+
+```{r}
+
+sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain + (1|ID2), data = data_app_all))
+
+# library(brms)
+# 
+# fancymodel <- brm(
+#   formula = rating_f ~ treatment,
+#   data = data_app_all,
+#   family = cumulative(link = "logit"),
+#   chains = 4, cores = 4, iter = 4000
+# )
+# 
+# fancymodel_interaction <- brm(
+#   formula = rating_f ~ treatment * domain,
+#   data = data_app_all,
+#   family = cumulative(link = "logit"),
+#   chains = 4, cores = 4, iter = 4000
+# )
+# 
+# sjPlot::plot_model(fancymodel_interaction)
+# 
+# pp_check(fancymodel_interaction)
+
+```
+
+## 3. Analysis of appropriateness of punishment if friend vs. non-friend
+
+Now I look at the appropriateness ratings of punishments if the violator is a friend vs. non friend.
+
+## 3.1 Vizualization {.tabset}
+
+Again, visual inspection does not reveal any striking differences bewteen treatments and domains.
+
+### Overall appropriatess across domains
+
+```{r, fig.width = 6, fig.height = 4 }
+
+data_punish_all %>% 
+  ggplot() +
+  geom_bar(aes(x = rating_f, fill = domain)) +
+  scale_x_discrete(drop = FALSE) +  # show all factor levels
+  facet_wrap( ~ treatment) +
+  labs(title = "Appropriateness of punishment across domains") +
+  theme(strip.background = element_rect(fill = "lightgrey"))
+```
+
+### Appropriateness by domain
+
+```{r, fig.width = 6, fig.height = 4 }
+data_punish_all %>% 
+  ggplot(aes(x = treatment, y = rating, fill = treatment)) +
+  geom_half_boxplot() +
+  geom_half_point(aes(color = treatment), alpha = .2) +
+  labs(title = "Appropriateness of punishment in each domain") +
+  facet_wrap(~domain) +
+  theme(strip.background = element_rect(fill = "lightgrey")) +
+  scale_fill_brewer(palette = "Set2")  + 
+  scale_color_brewer(palette = "Set2")
+
+```
+
+### Appropriateness of punishment by treatment and punisment type
+
+```{r, fig.width = 6, fig.height = 4 }
+
+data_punish_all %>% 
+  ggplot(aes(x = treatment, y = rating, fill = punishment_type)) +
+  geom_half_boxplot() +
+  geom_half_point(aes(color = punishment_type), alpha = .2) +
+  labs(title = "Appropriateness of punishment in each domain") +
+ # facet_wrap(~domain) +
+  theme(strip.background = element_rect(fill = "lightgrey")) +
+  scale_fill_brewer(palette = "Set2")  + 
+  scale_color_brewer(palette = "Set2")
+```
+
+## 3.1 ANOVA
+
+First, I run an ANOVA to get an idea of differences in mean ratings across treatments and domains.
+
+There was **no significant main effect of treatment**.
+
+In contrast, **domain** was significant, suggesting that the ratings varied meaningfully across different domains.
+
+The interaction between **treatment and domain** was also significant, implying that the effect of treatment differed depending on the domain.
+
+```{r}
+
+summary(aov(lm(rating ~ treatment * domain , data = data_punish_all)))
+
+```
+
+## 3.2 Regressions {.tabset}
+
+Now I fit 3 linear regressions to better explore directions of effects.
+
+First, only with treatment as independent variable, then I add interactions with domain (insult as reference) and finally I also include punishment type as exploratory variable (angry_remark as reference).
+
+The main results are [see tabs below for full results]:
+
+**Model 1: no effect**
+
+**Model2 :**
+
+-   Raters considered [more appropriate to punish friends who exclude others from group chats.]{.underline}
+
+**Model 3:**
+
+-   The domain "texting" was associated with significantly lower ratings compared to the reference domain.
+-   The punishment types "do nothing" and "gossip" led to significantly lower ratings compared to the reference punishment type.
+
+There a few significant interactions:
+
+-   The combination of "interrupt" domain and "avoid" punishment type was associated with lower ratings compared to the reference groups.
+
+-   The combination of "online" domain and "do nothing" punishment type was associated with lower ratings compared to the reference groups.
+
+-   The combination of "stealing" domain and "do nothing" punishment type was associated with lower ratings compared to the reference groups.
+
+-   The combination of "texting" domain and "do nothing" punishment type was associated with higher ratings compared to the reference groups.
+
+-    The combination of "stealing" domain and "gossip" punishment type was also associated with higher ratings compared to the reference groups.
+
+### Rating \~ Treatment
+
+```{r, fig.width = 6, fig.height = 4 }
+sjPlot::tab_model(lme4::lmer(rating ~ treatment  + (1|ID2), data = data_punish_all))
+```
+
+### Rating \~ Treatment \* Domain
+
+```{r, fig.width = 4, fig.height = 6 }
+sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain + (1|ID2), data = data_punish_all))
+```
+
+### Rating \~ Treatment \* Domain\* punishment type
+
+```{r, fig.width = 4, fig.height = 6 }
+sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain *punishment_type + (1|ID2), data = data_punish_all))
+```
