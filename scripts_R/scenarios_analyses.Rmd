@@ -452,6 +452,7 @@ sjPlot::tab_model(lme4::lmer(rating ~ treatment + (1|ID2), data = data_app_all))
 
 sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain + (1|ID2), data = data_app_all))
 
+
 # library(brms)
 # 
 # fancymodel <- brm(
