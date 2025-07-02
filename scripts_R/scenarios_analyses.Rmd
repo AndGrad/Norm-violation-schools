@@ -76,13 +76,13 @@ stealnoth <- faceted_barplot(
 ) +
   facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
 
-#2.angry remark
+#2.verbal confrontation
 
 stealremark <- faceted_barplot(
   data = data,
   x_var = stealremark,
   facet_var = stealfriend,
-  title_text = "Punishment: angry remark"
+  title_text = "Punishment: verbal confrontation"
 ) +
  labs() +
   facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
@@ -95,12 +95,12 @@ stealtalk <- faceted_barplot(
   title_text = "Punishment: gossip"
 ) + facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
 
-#4.avoid
+#4.social ostracism
 stealavoid <- faceted_barplot(
   data = data,
   x_var = stealavoid,
   facet_var = stealfriend,
-  title_text = "Punishment: avoid"
+  title_text = "Punishment: social ostracism"
 ) +
 
   facet_wrap( ~ stealfriend, labeller = labeller(.default = facet_labels))
@@ -151,14 +151,14 @@ phonenoth <- faceted_barplot(
  # labs(subtitle = "Friend A does nothing about the person who behaved like the PURPLE triangle") +
   facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))
 
-#2. angry remark
+#2. verbal confrontation
 phoneremark <- faceted_barplot(
   data = data,
   x_var = phoneremark,
   facet_var = phonefriend,
-  title_text = "Punishment: angry remark"
+  title_text = "Punishment: verbal confrontation"
 ) +
- # labs(subtitle = "Friend B makes an angry remark to the person who behaved like the PURPLE triangle.") +
+ # labs(subtitle = "Friend B makes an verbal confrontation to the person who behaved like the PURPLE triangle.") +
   facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))
 
 #3. gossip
@@ -171,12 +171,12 @@ phonetalk <- faceted_barplot(
 #  labs(subtitle = "Friend C talks to someone else about the person who behaved like the PURPLE triangle. ") +
   facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))
 
-#4.avoid
+#4.social ostracism
 phoneavoid <- faceted_barplot(
   data = data,
   x_var = phoneavoid,
   facet_var = phonefriend,
-  title_text = "Punishment: avoid"
+  title_text = "Punishment: social ostracism"
 ) +
   #labs(subtitle = "Friend D makes a point of avoiding the person who behaved like the PURPLE triangle in the future, even when that person is not behaving in this way.") +
   facet_wrap( ~ phonefriend, labeller = labeller(.default = facet_labels))
@@ -219,15 +219,15 @@ interruptnoth <- faceted_barplot(
  # labs(subtitle = "Friend A does nothing about the person who behaved like the PURPLE triangle") +
   facet_wrap( ~ interruptfriend, labeller = labeller(.default = facet_labels))
 
-#2. angry remark
+#2. verbal confrontation
 
 interruptremark <- faceted_barplot(
   data = data,
   x_var = interruptremark,
   facet_var = interruptfriend,
-  title_text = "Punishment: angry remark"
+  title_text = "Punishment: verbal confrontation"
 ) +
- # labs(subtitle = "Friend B makes an angry remark to the person who behaved like the PURPLE triangle.") +
+ # labs(subtitle = "Friend B makes an verbal confrontation to the person who behaved like the PURPLE triangle.") +
   facet_wrap( ~ interruptfriend, labeller = labeller(.default = facet_labels))
 
 #3. gossip
@@ -247,7 +247,7 @@ interruptavoid <- faceted_barplot(
   data = data,
   x_var = interruptavoid,
   facet_var = interruptfriend,
-  title_text = "Punishment: avoid"
+  title_text = "Punishment: social ostracism"
 ) +
   #labs(subtitle = "Friend D makes a point of avoiding the person who behaved like the PURPLE triangle in the future, even when that person is not behaving in this way.") +
   facet_wrap( ~ interruptfriend, labeller = labeller(.default = facet_labels))
@@ -290,15 +290,15 @@ insultnoth <- faceted_barplot(
  # labs(subtitle = "Friend A does nothing about the person who behaved like the PURPLE triangle") +
   facet_wrap( ~ insultfriend, labeller = labeller(.default = facet_labels))
 
-#2. angry remark
+#2. verbal confrontation
 
 insultremark <- faceted_barplot(
   data = data,
   x_var = insultremark,
   facet_var = insultfriend,
-  title_text = "Punishment: angry remark"
+  title_text = "Punishment: verbal confrontation"
 ) +
- # labs(subtitle = "Friend B makes an angry remark to the person who behaved like the PURPLE triangle.") +
+ # labs(subtitle = "Friend B makes an verbal confrontation to the person who behaved like the PURPLE triangle.") +
   facet_wrap( ~ insultfriend, labeller = labeller(.default = facet_labels))
 
 #3. gossip
@@ -318,7 +318,7 @@ insultavoid <- faceted_barplot(
   data = data,
   x_var = insultavoid,
   facet_var = insultfriend,
-  title_text = "Punishment: avoid"
+  title_text = "Punishment: social ostracism"
 ) +
   #labs(subtitle = "Friend D makes a point of avoiding the person who behaved like the PURPLE triangle in the future, even when that person is not behaving in this way.") +
   facet_wrap( ~ insultfriend, labeller = labeller(.default = facet_labels))
@@ -335,7 +335,7 @@ panel_insult
 
 ```
 
-### Exclude
+### Avoid
 
 ```{r}
 
@@ -360,15 +360,15 @@ onlinenothing <- faceted_barplot(
  # labs(subtitle = "Friend A does nothing about the person who behaved like the PURPLE triangle") +
   facet_wrap( ~ onlinefriend, labeller = labeller(.default = facet_labels))
 
-#2. angry remark
+#2. verbal confrontation
 
 onlineremark <- faceted_barplot(
   data = data,
   x_var = onlineremark,
   facet_var = onlinefriend,
-  title_text = "Punishment: angry remark"
+  title_text = "Punishment: verbal confrontation"
 ) +
- # labs(subtitle = "Friend B makes an angry remark to the person who behaved like the PURPLE triangle.") +
+ # labs(subtitle = "Friend B makes an verbal confrontation to the person who behaved like the PURPLE triangle.") +
   facet_wrap( ~ onlinefriend, labeller = labeller(.default = facet_labels))
 
 #3. gossip
@@ -387,7 +387,7 @@ onlineavoid <- faceted_barplot(
   data = data,
   x_var = onlineavoid,
   facet_var = onlinefriend,
-  title_text = "Punishment: avoid"
+  title_text = "Punishment: social ostracism"
 ) +
   #labs(subtitle = "Friend D makes a point of avoiding the person who behaved like the PURPLE triangle in the future, even when that person is not behaving in this way.") +
   facet_wrap( ~ onlinefriend, labeller = labeller(.default = facet_labels))
@@ -400,6 +400,59 @@ panel_online <- onlineapp / (onlinenothing + onlineavoid)  / (onlinetalk   + onl
   )
 
 panel_online
+
+```
+
+## 1.1. Correlation of appropriantess of violations and appropriateness of punishment.
+
+Hypothesis: more appropriate a behavior is, the less appropriate the punishment should be (neg corr), except doing nothing (pos corr)
+
+```{r}
+
+data_punish <- data_punish_all %>% 
+  group_by(ID2, domain, treatment, punishment_type) %>% 
+  rename(rating_punish = rating) 
+
+data_app_all_mean <- data_app_all %>% 
+  select(ID2, treatment, rating, domain ) %>% 
+  rename(rating_violation = rating)
+
+data_cor <- merge(data_punish, data_app_all_mean, by = c('ID2', 'treatment', "domain" )) %>% 
+  distinct() 
+
+  correlation_df <- data_cor %>% 
+  ungroup() %>% 
+  group_by(punishment_type) %>% 
+  summarise(
+    spearman_rho = cor(rating_punish, rating_violation, method = "spearman"),
+    n = n()
+  )
+  
+  data_cor %>% 
+    ggplot(aes(fill = treatment)) +
+    geom_half_boxplot(aes(x= as_factor(rating_violation), y = rating_punish)) + 
+    geom_half_point(aes(x= as_factor(rating_violation), y = rating_punish), alpha = .1) +
+    geom_smooth(aes(x= rating_violation + 1, y = rating_punish),method = "lm") +
+    labs(x = "violation",
+         y = "punishment") +
+    theme_cowplot() +
+    theme(strip.background = element_rect(fill = "lightgrey")) +
+    scale_fill_brewer(palette = "Set2")  + 
+    scale_color_brewer(palette = "Set2")  +
+    facet_wrap(~punishment_type, nrow = 1)
+  
+data_cor %>% 
+ggplot(aes(fill = treatment)) +
+  geom_half_boxplot(aes(x= as_factor(rating_violation), y = rating_punish)) + 
+  geom_half_point(aes(x= as_factor(rating_violation), y = rating_punish), alpha = .1) +
+  geom_smooth(aes(x= rating_violation + 1, y = rating_punish),method = "lm") +
+  labs(x = "violation",
+       y = "punishment") +
+  theme_cowplot() +
+  theme(strip.background = element_rect(fill = "lightgrey")) +
+  scale_fill_brewer(palette = "Set2")  + 
+  scale_color_brewer(palette = "Set2")  +
+  facet_grid(punishment_type~domain)
 
 ```
 
@@ -487,7 +540,7 @@ Again, visual inspection does not reveal any striking differences bewteen treatm
 
 ```{r, fig.width = 6, fig.height = 4 }
 
-data_punish_all %>% 
+data_punish_no_nothing %>% 
   ggplot() +
   geom_bar(aes(x = rating_f, fill = domain)) +
   scale_x_discrete(drop = FALSE) +  # show all factor levels
@@ -499,7 +552,7 @@ data_punish_all %>%
 ### Appropriateness by domain
 
 ```{r, fig.width = 6, fig.height = 4 }
-data_punish_all %>% 
+data_punish_no_nothing %>% 
   ggplot(aes(x = treatment, y = rating, fill = treatment)) +
   geom_half_boxplot() +
   geom_half_point(aes(color = treatment), alpha = .2) +
@@ -515,7 +568,7 @@ data_punish_all %>%
 
 ```{r, fig.width = 6, fig.height = 4 }
 
-data_punish_all %>% 
+data_punish_no_nothing %>% 
   ggplot(aes(x = treatment, y = rating, fill = punishment_type)) +
   geom_half_boxplot() +
   geom_half_point(aes(color = punishment_type), alpha = .2) +
@@ -538,7 +591,7 @@ The interaction between **treatment and domain** was also significant, implying 
 
 ```{r}
 
-summary(aov(lm(rating ~ treatment * domain , data = data_punish_all)))
+summary(aov(lm(rating ~ treatment * domain , data = data_punish_no_nothing)))
 
 ```
 
@@ -576,17 +629,17 @@ There a few significant interactions:
 ### Rating \~ Treatment
 
 ```{r, fig.width = 6, fig.height = 4 }
-sjPlot::tab_model(lme4::lmer(rating ~ treatment  + (1|ID2), data = data_punish_all))
+sjPlot::tab_model(lme4::lmer(rating ~ treatment  + (1|ID2), data = data_punish_no_nothing))
 ```
 
 ### Rating \~ Treatment \* Domain
 
 ```{r, fig.width = 4, fig.height = 6 }
-sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain + (1|ID2), data = data_punish_all))
+sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain + (1|ID2), data = data_punish_no_nothing))
 ```
 
 ### Rating \~ Treatment \* Domain\* punishment type
 
 ```{r, fig.width = 4, fig.height = 6 }
-sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain *punishment_type + (1|ID2), data = data_punish_all))
+sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain *punishment_type + (1|ID2), data = data_punish_no_nothing))
 ```

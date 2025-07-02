@@ -98,7 +98,9 @@ data_punish_steal <-
          punishment_type = ifelse(punishment == "stealnoth", "do_nothing",
                                   ifelse(punishment == "stealremark","agry_remark", 
                                          ifelse(punishment == "stealtalk", "gossip",
-                                                "avoid"))))
+                                                ifelse(punishment == "stealphyspunapp", "physical",
+                                                "avoid"))))) %>% 
+  filter(punishment_type != 'physical') ## put back in case we want to do something with this
 
 data_punish_phone <- 
   data %>% 
@@ -161,6 +163,9 @@ data_punish_all <- bind_rows(
 ) %>% 
   select(ID2, punishment, rating, rating_f, treatment, domain, punishment_type)
 
+data_punish_no_nothing <- data_punish_all %>% 
+  filter(punishment_type != "do_nothing")
+
 
 network_info <- data %>% 
   select(ID2, in_degree_1n, in_degree_1p, in_degree_2p, in_degree_2n, `CC+I(in)`, `CC+II(in)`, `BC+I`, `BC+II`, `BC-`, `EC+I(in)`, `EC+II(in)`) %>% 
@@ -168,6 +173,10 @@ network_info <- data %>%
          std_in_degree_1p = scale(in_degree_1p),
          std_in_degree_2n = scale(in_degree_2n),
          std_in_degree_1n = scale(in_degree_1n),
+         net_indegree12 = ((in_degree_1p ) - ((in_degree_1n + in_degree_2n))),
+         net_indegree22 = ((in_degree_1p + in_degree_2p) - ((in_degree_1n + in_degree_2n))),
+         std_net_indegree12 = scale(net_indegree12),
+         std_net_indegree22 = scale(net_indegree22),
          CC1 = `CC+I(in)`,
          CC2 = `CC+II(in)`,
          BC1 = `BC+I`,
@@ -177,4 +186,3 @@ network_info <- data %>%
   )
 
 net_appropriateness <- merge(network_info, data_app_all, by = "ID2")
-

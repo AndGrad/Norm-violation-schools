@@ -345,10 +345,10 @@ tab_model(lmer(rating ~  BC2  + (1|ID2), data = net_appropriateness))
 tab_model(lmer(rating ~  EC1  + (1|ID2), data = net_appropriateness))
 ```
 
-### Eigenvector Centrality [Best-friends]
+### new centrality
 
 ```{r}
-tab_model(lmer(rating ~  EC2  + (1|ID2), data = net_appropriateness))
+tab_model(lmer(rating ~  std_net_indegree12  + (1|ID2), data = net_appropriateness))
 ```
 
 ## 3.2 Appropriateness ratings by network measures and treatment {.tabset}
@@ -398,8 +398,14 @@ tab_model(lmer(rating ~  EC1  * treatment + (1|ID2), data = net_appropriateness)
 tab_model(lmer(rating ~  EC2  * treatment + (1|ID2), data = net_appropriateness))
 ```
 
+### Combined score: 12
 ```{r}
+tab_model(lmer(rating ~ net_indegree12 + (1|ID2), data = net_appropriateness))
+```
 
+### Combined score: 22
+```{r}
+tab_model(lmer(rating ~ net_indegree12 + (1|ID2), data = net_appropriateness))
 ```
 
 ## 4. Regression analyses of appropriateness of punishment {.tabset}
@@ -419,7 +425,7 @@ This means that [central individuals rated punishing others as more appropriate]
 *Note that this is slightly counter-intuitive as central individuals were also rating violations as more appropriate.*
 
 ```{r}
-net_punishment <- merge(network_info, data_punish_all, by = "ID2")
+net_punishment <- merge(network_info, data_punish_no_nothing, by = "ID2")
 ```
 
 ### In-degree [Good-friends]
@@ -457,6 +463,22 @@ tab_model(lmer(rating ~ EC1 + (1|ID2), data = net_punishment))
 ```{r}
 tab_model(lmer(rating ~ EC2 + (1|ID2), data = net_punishment))
 ```
+
+### Combined score: 12
+
+```{r}
+tab_model(lmer(rating ~ net_indegree12 + (1|ID2), data = net_punishment))
+```
+
+
+### Combined score: 22
+
+```{r}
+tab_model(lmer(rating ~ net_indegree22 + (1|ID2), data = net_punishment))
+```
+
+
+
 
 ## 4.2 Appropriateness of punishment by network metrics \* treatment {.tabset}
 
@@ -579,7 +601,6 @@ The higher participants' Eigenvector Centrality, the higher the appropriateness 
 ### Punishment Rating \~ Eigenvector Centrality \* Treatment \* Domain
 
 ```{r}
-
 net_punishment %>% 
   group_by(ID2, treatment, domain) %>% 
   mutate(mean_rating = mean(rating),
@@ -595,3 +616,4 @@ facet_wrap(~domain)
 ```
 
 The higher participants' Eigenvector Centrality, the higher the appropriateness rating. Ratings are displayed separately across the 5 domains. Each dot is 1 participant in 1 treatment (nf = non-friend, f = friend).
+
