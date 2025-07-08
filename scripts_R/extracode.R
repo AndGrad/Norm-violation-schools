@@ -32,47 +32,7 @@ sjPlot::tab_model(lme4::lmer(rating ~ treatment + (1|ID2), data = data_punish_in
 
 
 
-data_punish_mean <- data_punish_all %>% 
-  filter(punishment_type != "do_nothing") %>% 
-  group_by(ID2, domain, treatment) %>% 
-  summarize(mean_rating = mean(rating)) 
 
-data_app_all_mean <- data_app_all %>% 
-  select(ID2, treatment, rating, domain ) 
-
-data_cor <- merge(data_punish_mean,data_app_all_mean, by = c('ID2', 'treatment', "domain" )) %>% 
-  distinct()
-
-ggplot(data = data_cor, aes(fill = treatment)) +
-  geom_half_boxplot(aes(x= as_factor(rating), y = mean_rating)) + 
-  geom_half_point(aes(x= as_factor(rating), y = mean_rating)) +
-  geom_smooth(aes(x= rating + 1, y = mean_rating),method = "lm") +
-  labs(x = "violation",
-       y = "punishment") +
-  theme_cowplot() +
-  theme(strip.background = element_rect(fill = "lightgrey")) +
-  scale_fill_brewer(palette = "Set2")  + 
-  scale_color_brewer(palette = "Set2")  
-
-ggplot(data = data_cor, aes(fill = treatment)) +
-  geom_half_boxplot(aes(x= as_factor(rating), y = mean_rating)) + 
-  geom_half_point(aes(x= as_factor(rating), y = mean_rating), alpha = .1) +
-  geom_smooth(aes(x= rating + 1, y = mean_rating),method = "lm") +
-  labs(x = "violation",
-       y = "punishment") +
-  theme_cowplot() +
-  theme(strip.background = element_rect(fill = "lightgrey")) +
-  scale_fill_brewer(palette = "Set2")  + 
-  scale_color_brewer(palette = "Set2")  +
-  facet_wrap(~domain)
-
-data_cor 
-  cor(data_cor$mean_rating, data_cor$rating)
-
-sjPlot::tab_model(lme4::lmer(rating ~ treatment + (1|ID2), data = cor(data_cor$mean_rating, data_cor$rating)
-))
-
-```{r}
 
 
 sjPlot::tab_model(lme4::lmer(rating ~ treatment + (1|ID2), data = data_punish_insult))

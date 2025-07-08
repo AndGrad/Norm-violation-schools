@@ -1,5 +1,3 @@
-
-
 library(cowplot)
 library(gghalves)
 
@@ -26,6 +24,8 @@ var_name <- deparse(substitute(variable))  # Get the variable name as a string
 }
 
 faceted_barplot <- function(data, x_var, facet_var, title_text) {
+  
+  data <- data %>% dplyr::filter(!is.na({{ x_var }}))
   
   facet_var_name <- deparse(substitute(facet_var))
   ggplot(data, aes(x = factor({{ x_var }}), y = after_stat(prop), group = {{ facet_var }}, fill = factor({{ facet_var }},levels=c("0","1")))) +

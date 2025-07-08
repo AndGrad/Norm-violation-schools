@@ -403,12 +403,13 @@ panel_online
 
 ```
 
-## 1.1. Correlation of appropriantess of violations and appropriateness of punishment.
+## 1.1. Correlation of appropriantess of violations and appropriateness of punishment. {.tabset}
 
-Hypothesis: more appropriate a behavior is, the less appropriate the punishment should be (neg corr), except doing nothing (pos corr)
+Correlation between violation ratings and punishment ratings across scenarios for each punishment type. The expectation is: negative relationship for angry remark, avoidance and gossip, and positive for doing nothing . (cf Fig. 1 of [Eriksonn 2021](https://www.nature.com/articles/s41467-021-21602-9))
 
-```{r}
+Rho are Spearman ranked correlation coefficients (**calculated across treatments**). For a full overview see the table (third panel)
 
+```{r, fig.width = 6, fig.height = 6  }
 data_punish <- data_punish_all %>% 
   group_by(ID2, domain, treatment, punishment_type) %>% 
   rename(rating_punish = rating) 
@@ -425,14 +426,27 @@ data_cor <- merge(data_punish, data_app_all_mean, by = c('ID2', 'treatment', "do
   group_by(punishment_type) %>% 
   summarise(
     spearman_rho = cor(rating_punish, rating_violation, method = "spearman"),
-    n = n()
-  )
+    n = n())
+
+ correlation_df_treatment <- data_cor %>% 
+  ungroup() %>% 
+  group_by(punishment_type, domain, treatment) %>% 
+  summarise(
+    spearman_rho = cor(rating_punish, rating_violation, method = "spearman"),
+    n = n())
   
-  data_cor %>% 
+```
+
+### Without separating by domain
+
+```{r, fig.width = 8, fig.height = 4  }
+data_cor %>% 
     ggplot(aes(fill = treatment)) +
     geom_half_boxplot(aes(x= as_factor(rating_violation), y = rating_punish)) + 
     geom_half_point(aes(x= as_factor(rating_violation), y = rating_punish), alpha = .1) +
     geom_smooth(aes(x= rating_violation + 1, y = rating_punish),method = "lm") +
+    geom_label(data = correlation_df, aes(x = Inf, y = Inf, label = paste ( "rho = ",round(spearman_rho,2))),
+            hjust = 1.1, vjust = 1.5, inherit.aes = FALSE, color = 'red') +
     labs(x = "violation",
          y = "punishment") +
     theme_cowplot() +
@@ -440,12 +454,19 @@ data_cor <- merge(data_punish, data_app_all_mean, by = c('ID2', 'treatment', "do
     scale_fill_brewer(palette = "Set2")  + 
     scale_color_brewer(palette = "Set2")  +
     facet_wrap(~punishment_type, nrow = 1)
-  
+```
+
+### Separating by domain
+
+```{r, fig.width = 10, fig.height = 8 }
 data_cor %>% 
 ggplot(aes(fill = treatment)) +
   geom_half_boxplot(aes(x= as_factor(rating_violation), y = rating_punish)) + 
   geom_half_point(aes(x= as_factor(rating_violation), y = rating_punish), alpha = .1) +
   geom_smooth(aes(x= rating_violation + 1, y = rating_punish),method = "lm") +
+      geom_label(data = correlation_df_treatment, aes(x = 5, y = 
+                                                       5, label = paste ( "rho = ",round(spearman_rho,2))),
+            size = 4, inherit.aes =  FALSE, position =position_nudge(x = 0, y = )) +
   labs(x = "violation",
        y = "punishment") +
   theme_cowplot() +
@@ -453,6 +474,16 @@ ggplot(aes(fill = treatment)) +
   scale_fill_brewer(palette = "Set2")  + 
   scale_color_brewer(palette = "Set2")  +
   facet_grid(punishment_type~domain)
+
+```
+
+### full table of correlation coefficients
+
+```{r}
+
+correlation_df_treatment %>% 
+  mutate(spearman_rho = round(spearman_rho, 2)) %>% 
+           kable(n = 50)
 
 ```
 
@@ -465,6 +496,7 @@ Now I merge all the scenarios together.
 Overall appropriateness is quite low, with again no striking difference between treatments.
 
 ```{r, fig.width = 6, fig.height = 4}
+
 data_app_all %>% 
   ggplot() +
   geom_bar(aes(x = rating_f, fill = domain)) +
@@ -473,6 +505,7 @@ data_app_all %>%
   labs(title = "Appropriateness of behaviours across domains",
        x = "rating") +
   theme(strip.background = element_rect(fill = "lightgrey"))
+
 ```
 
 ## 2.1 ANOVA
@@ -491,7 +524,7 @@ First, a linear regression predicting rating \~ treatment shows a small effect o
 
 If we include a test of interactions between treatment and domain, we can see that the effect is driven by the "exclude from online chat scenario:
 
->  "One student who is part of your **friends/others** **group** (**Student A**) excluded **another student**, who is also a part of your **friends group**, from a group chat on WhatsApp."
+> "One student who is part of your **friends/others** **group** (**Student A**) excluded **another student**, who is also a part of your **friends group**, from a group chat on WhatsApp."
 
 ### Rating \~ Treatment
 
@@ -504,7 +537,6 @@ sjPlot::tab_model(lme4::lmer(rating ~ treatment + (1|ID2), data = data_app_all))
 ```{r}
 
 sjPlot::tab_model(lme4::lmer(rating ~ treatment * domain + (1|ID2), data = data_app_all))
-
 
 # library(brms)
 # 
@@ -607,24 +639,23 @@ The main results are [see tabs below for full results]:
 
 **Model2 :**
 
--   Raters considered [more appropriate to punish friends who exclude others from group chats.]{.underline}
+-  There are differences between baseline ratings across domains, but no interactions {.underline}
 
 **Model 3:**
 
 -   The domain "texting" was associated with significantly lower ratings compared to the reference domain.
--   The punishment types "do nothing" and "gossip" led to significantly lower ratings compared to the reference punishment type.
 
 There a few significant interactions:
 
+-   The punishment type gsip has lower ratings than the reference group.
+
 -   The combination of "interrupt" domain and "avoid" punishment type was associated with lower ratings compared to the reference groups.
 
--   The combination of "online" domain and "do nothing" punishment type was associated with lower ratings compared to the reference groups.
+-   The combination of "stealing" domain and "avoid" punishment type was associated with higher ratings compared to the reference groups.
 
--   The combination of "stealing" domain and "do nothing" punishment type was associated with lower ratings compared to the reference groups.
+-   The combination of "texting" domain and "gossip" punishment type was associated with higher ratings compared to the reference groups.
 
--   The combination of "texting" domain and "do nothing" punishment type was associated with higher ratings compared to the reference groups.
-
--    The combination of "stealing" domain and "gossip" punishment type was also associated with higher ratings compared to the reference groups.
+-   The combination of "stealing" domain and "gossip" punishment type was also associated with higher ratings compared to the reference groups.
 
 ### Rating \~ Treatment
 

@@ -327,6 +327,11 @@ tab_model(lmer(rating ~ std_in_degree_1p  + (1|ID2), data = net_appropriateness)
 tab_model(lmer(rating ~ std_in_degree_2p   + (1|ID2), data = net_appropriateness))
 ```
 
+### In-degree [Enemies]
+
+```{r}
+tab_model(lmer(rating ~ in_degree_2n   + (1|ID2), data = net_appropriateness))
+```
 ### Betweeness Centrality [Good-friends]
 
 ```{r}
@@ -475,9 +480,8 @@ tab_model(lmer(rating ~ net_indegree12 + (1|ID2), data = net_punishment))
 
 ```{r}
 tab_model(lmer(rating ~ net_indegree22 + (1|ID2), data = net_punishment))
+
 ```
-
-
 
 
 ## 4.2 Appropriateness of punishment by network metrics \* treatment {.tabset}

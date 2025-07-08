@@ -161,11 +161,16 @@ data_punish_all <- bind_rows(
   data_punish_phone,
   data_punish_steal
 ) %>% 
-  select(ID2, punishment, rating, rating_f, treatment, domain, punishment_type)
+  select(ID2, punishment, rating, rating_f, treatment, domain, punishment_type) %>% 
+  mutate(rating_reverse_nothing = if_else(
+    punishment_type == "do_nothing",
+    6 - rating, 
+    rating       
+  )) 
 
 data_punish_no_nothing <- data_punish_all %>% 
-  filter(punishment_type != "do_nothing")
-
+  filter(punishment_type != "do_nothing") %>% 
+  select(-c("rating_reverse_nothing"))
 
 network_info <- data %>% 
   select(ID2, in_degree_1n, in_degree_1p, in_degree_2p, in_degree_2n, `CC+I(in)`, `CC+II(in)`, `BC+I`, `BC+II`, `BC-`, `EC+I(in)`, `EC+II(in)`) %>% 
